@@ -42,4 +42,7 @@ def mask(image):    mask = np.zeros(image.shape[:2], dtype="uint8")
     # Displaying the image
     cv2.imshow("Mask", mask)
 
-     
+           # performing a bitwise_and with the image and the mask
+    masked = cv2.bitwise_and(image, image, mask=mask)
+    cv2.imshow("Mask applied to Image", masked)
+    return masked
