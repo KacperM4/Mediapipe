@@ -54,4 +54,13 @@ def jasnosc(image):    kernel = np.array([[0, -1, 0],
     cv2.imshow('M ',image)
     return image
     # To improve performance, optionally mark the image as not writeable to
-    # pass by reference.
+    # pass by reference.def splitchannels(image):
+    b,g,r = cv2.split(image)
+    cv2.imshow("Model Blue Image", b)
+    cv2.imshow("Model Green Image", g)
+    cv2.imshow("Model Red Image", r)
+
+    image = cv2.merge([r, g, b])
+
+    cv2.imshow('Merged', image)
+    return image
