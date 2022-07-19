@@ -71,3 +71,8 @@ print((int(cap.get(4)), int(cap.get(3))))
 
 out = cv2.VideoWriter("D:/Tenis_04_07/Wideonly/mediapipe/test.mp4", cv2.VideoWriter_fourcc(*'MPG4'), 24, (int(cap.get(3)), int(cap.get(4))))
 
+
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
+mp_holistic = mp.solutions.holistic
+mp_pose = mp.solutions.pose
