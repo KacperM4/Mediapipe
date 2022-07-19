@@ -46,3 +46,12 @@ def mask(image):    mask = np.zeros(image.shape[:2], dtype="uint8")
     masked = cv2.bitwise_and(image, image, mask=mask)
     cv2.imshow("Mask applied to Image", masked)
     return masked
+
+def jasnosc(image):    kernel = np.array([[0, -1, 0],
+                   [-1, 7,-1],
+                   [0, -1, 0]])
+    image= cv2.filter2D(src=image, ddepth=-10, kernel=kernel)
+    cv2.imshow('M ',image)
+    return image
+    # To improve performance, optionally mark the image as not writeable to
+    # pass by reference.
