@@ -97,3 +97,8 @@ allPoints = []with mp_pose.Pose(
     
       break
         image = cv2.resize(image, (700, 450))
+    #image = converttogray(image)
+    #image = converttoHSV(image)
+    image = jasnosc(image)
+    #image = splitchannels(image)
+    #image = mask(image)
