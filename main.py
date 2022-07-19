@@ -131,4 +131,12 @@ allPoints = []with mp_pose.Pose(
     results.pose_landmarks.landmark[10].x = -1
     results.pose_landmarks.landmark[10].y = -1
  
-    image.flags.writeable = True
+    image.flags.writeable = True    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    mp_drawing.draw_landmarks(
+        image,
+        results.pose_landmarks,
+        TENNIS_POSE_CONNECTIONS,
+        landmark_drawing_spec=mp_drawing_styles
+        .get_default_tennis_style(),
+        connection_drawing_spec=mp_drawing_styles
+        .get_default_tennis_style())
