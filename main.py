@@ -34,4 +34,12 @@ def mask(image):    mask = np.zeros(image.shape[:2], dtype="uint8")
     Mask = cv2.erode(Mask, kernel, iterations=1)
     Mask = cv2.morphologyEx(Mask, cv2.MORPH_OPEN, kernel)
     Mask = cv2.dilate(Mask, kernel, iterations=1)
-    
+        
+    # Inverting the mask by
+    # performing bitwise-not operation
+    mask = cv2.bitwise_not(Mask)
+  
+    # Displaying the image
+    cv2.imshow("Mask", mask)
+
+     
