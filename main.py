@@ -23,4 +23,7 @@ def mask(image):    mask = np.zeros(image.shape[:2], dtype="uint8")
     kernel = np.ones((5, 5), np.uint8)
           
     # converting the image to HSV format
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)    # defining the lower and upper values of HSV,
+    # this will detect yellow colour
+    Lower_hsv = np.array([20, 15, 15])
+    Upper_hsv = np.array([210, 210, 210])
