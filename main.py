@@ -17,4 +17,8 @@ def converttogray(image):
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
 def mask(image):    mask = np.zeros(image.shape[:2], dtype="uint8")
-      
+            # creating a rectangle on the mask
+      # where the pixels are valued at 255
+        # The kernel to be used for dilation purpose
+    kernel = np.ones((5, 5), np.uint8)
+  
