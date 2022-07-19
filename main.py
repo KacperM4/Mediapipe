@@ -102,3 +102,33 @@ allPoints = []with mp_pose.Pose(
     image = jasnosc(image)
     #image = splitchannels(image)
     #image = mask(image)    cv2.imshow('M ',image)
+    #image = mask(image)
+    cv2.imshow('M ',image)
+
+    image.flags.writeable = False
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    results = pose.process(image)
+    results.pose_landmarks.landmark[6].x = -1
+    results.pose_landmarks.landmark[6].y = -1
+    results.pose_landmarks.landmark[8].x = -1
+    results.pose_landmarks.landmark[8].y = -1
+    results.pose_landmarks.landmark[5].x = -1
+    results.pose_landmarks.landmark[5].y = -1
+    results.pose_landmarks.landmark[4].x = -1
+    results.pose_landmarks.landmark[4].y = -1
+    results.pose_landmarks.landmark[0].x = -1
+    results.pose_landmarks.landmark[0].y = -1
+    results.pose_landmarks.landmark[1].x = -1
+    results.pose_landmarks.landmark[1].y = -1
+    results.pose_landmarks.landmark[2].x = -1
+    results.pose_landmarks.landmark[2].y = -1
+    results.pose_landmarks.landmark[3].x = -1
+    results.pose_landmarks.landmark[3].y = -1
+    results.pose_landmarks.landmark[7].x = -1
+    results.pose_landmarks.landmark[7].y = -1
+    results.pose_landmarks.landmark[9].x = -1
+    results.pose_landmarks.landmark[9].y = -1
+    results.pose_landmarks.landmark[10].x = -1
+    results.pose_landmarks.landmark[10].y = -1
+ 
+    image.flags.writeable = True
