@@ -1,17 +1,24 @@
-from tkinter.tix import IMAGE
 import cv2
 from matplotlib import image
 import mediapipe as mp
-import time
 import numpy as np
 
-def converttoHSV(image):
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    image = cv2.cvtColor(image, cv2.COLOR_HSV2BGR)
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
+mp_holistic = mp.solutions.holistic
+mp_pose = mp.solutions.pose
+cap = cv2.VideoCapture('D:\\Tenis_04_07\\Wideonly\\zverev.mp4')
+print((int(cap.get(4)), int(cap.get(3))))
+
+out = cv2.VideoWriter('D:/Tenis_04_07/Wideonly/mediapipe/test.mp4', cv2.VideoWriter_fourcc(*'MPG4'), 24, (int(cap.get(3)), int(cap.get(4))))
+TENNIS_POSE_CONNECTIONS = frozenset([(11, 12), (11, 13),
+                              (13, 15), (15, 17), (15, 19), (15, 21), (17, 19),
+                              (12, 14), (14, 16), (16, 18), (16, 20), (16, 22),
+                              (18, 20), (11, 23), (12, 24), (23, 24), (23, 25),
+                              (24, 26), (25, 27), (26, 28), (27, 29), (28, 30),
+                              (29, 31), (30, 32), (27, 31), (28, 32)])
   
-
-
-def converttogray(image):
+def convert_to_gray(image):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     cv2.imshow('M ',image)
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
@@ -32,14 +39,16 @@ def mask(image):
     cv2.imshow("Mask applied to Image", masked)
     return masked
 
-def jasnosc(image):    kernel = np.array([[0, -1, 0],
+def brightness(image):
+    kernel = np.array([[0, -1, 0],
                    [-1, 7,-1],
                    [0, -1, 0]])
     image= cv2.filter2D(src=image, ddepth=-10, kernel=kernel)
-    cv2.imshow('M ',image)
+    cv2.imshow('brightness',image)
     return image
-    # To improve performance, optionally mark the image as not writeable to
-    # pass by reference.def splitchannels(image):
+
+def split_channels(image):
+
     b,g,r = cv2.split(image)
     cv2.imshow("Model Blue Image", b)
     cv2.imshow("Model Green Image", g)
@@ -50,10 +59,6 @@ def jasnosc(image):    kernel = np.array([[0, -1, 0],
     cv2.imshow('Merged', image)
     return image
 
-cap = cv2.VideoCapture("D:\\Tenis_04_07\\Wideonly\\zverev.mp4")
-print((int(cap.get(4)), int(cap.get(3))))
-
-out = cv2.VideoWriter("D:/Tenis_04_07/Wideonly/mediapipe/test.mp4", cv2.VideoWriter_fourcc(*'MPG4'), 24, (int(cap.get(3)), int(cap.get(4))))
 
 allPoints = []
 with mp_pose.Pose(
@@ -67,16 +72,14 @@ with mp_pose.Pose(
     success, image = cap.read()
     if not success:
       print("Ignoring empty camera frame.")
-    
       break
-        image = cv2.resize(image, (700, 450))
-    #image = converttogray(image)
-    #image = converttoHSV(image)
-    image = jasnosc(image)
-    #image = splitchannels(image)
-    #image = mask(image)    cv2.imshow('M ',image)
+    
+    image = cv2.resize(image, (700, 450))
+
+    #image = converToGray(image)
+    #image = brightness(image)
+    image = split_channels(image)
     #image = mask(image)
-    cv2.imshow('M ',image)
 
     image.flags.writeable = False
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -104,7 +107,8 @@ with mp_pose.Pose(
     results.pose_landmarks.landmark[10].x = -1
     results.pose_landmarks.landmark[10].y = -1
  
-    image.flags.writeable = True    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    image.flags.writeable = True
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     mp_drawing.draw_landmarks(
         image,
         results.pose_landmarks,
@@ -113,12 +117,11 @@ with mp_pose.Pose(
         .get_default_tennis_style(),
         connection_drawing_spec=mp_drawing_styles
         .get_default_tennis_style())
-
-    #print(image.shape[0], image.shape[1], )
    
     #ZVEREV POZIOMO
     #imS = cv2.resize(image, (700, 450))
-        cv2.imshow('MediaPipe ',image)
+    
+    cv2.imshow('MediaPipe ',image)
     out.write(image)
     if cv2.waitKey(100) & 0xFF == 27:
       break
