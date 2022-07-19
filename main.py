@@ -83,4 +83,6 @@ TENNIS_POSE_CONNECTIONS = frozenset([(11, 12), (11, 13),
                               (18, 20), (11, 23), (12, 24), (23, 24), (23, 25),
                               (24, 26), (25, 27), (26, 28), (27, 29), (28, 30),
                               (29, 31), (30, 32), (27, 31), (28, 32)])
-allPoints = []
+allPoints = []with mp_pose.Pose(
+    min_detection_confidence=0.7,
+    min_tracking_confidence=0.8) as pose:
