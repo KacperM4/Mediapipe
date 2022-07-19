@@ -28,3 +28,10 @@ def mask(image):    mask = np.zeros(image.shape[:2], dtype="uint8")
     # defining the lower and upper values of HSV,
     # this will detect yellow colour
     Lower_hsv = np.array([20, 15, 15])
+    # creating the mask by eroding,morphing,
+    # dilating process
+    Mask = cv2.inRange(hsv, Lower_hsv, Upper_hsv)
+    Mask = cv2.erode(Mask, kernel, iterations=1)
+    Mask = cv2.morphologyEx(Mask, cv2.MORPH_OPEN, kernel)
+    Mask = cv2.dilate(Mask, kernel, iterations=1)
+    
