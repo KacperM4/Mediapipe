@@ -96,4 +96,4 @@ allPoints = []with mp_pose.Pose(
       print("Ignoring empty camera frame.")
     
       break
-    
+        image = cv2.resize(image, (700, 450))
