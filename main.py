@@ -10,3 +10,8 @@ def converttoHSV(image):
     image = cv2.cvtColor(image, cv2.COLOR_HSV2BGR)
   
 
+
+def converttogray(image):
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    cv2.imshow('M ',image)
+    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
