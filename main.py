@@ -64,3 +64,10 @@ def jasnosc(image):    kernel = np.array([[0, -1, 0],
 
     cv2.imshow('Merged', image)
     return image
+
+cap = cv2.VideoCapture("D:\\Tenis_04_07\\Wideonly\\zverev.mp4")
+print((int(cap.get(4)), int(cap.get(3))))
+
+
+out = cv2.VideoWriter("D:/Tenis_04_07/Wideonly/mediapipe/test.mp4", cv2.VideoWriter_fourcc(*'MPG4'), 24, (int(cap.get(3)), int(cap.get(4))))
+
