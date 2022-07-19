@@ -85,4 +85,15 @@ TENNIS_POSE_CONNECTIONS = frozenset([(11, 12), (11, 13),
                               (29, 31), (30, 32), (27, 31), (28, 32)])
 allPoints = []with mp_pose.Pose(
     min_detection_confidence=0.7,
-    min_tracking_confidence=0.8) as pose:
+    min_tracking_confidence=0.8) as pose:  frame=0
+
+  
+  while cap.isOpened():
+  #while frame < 30:
+    frame = frame + 1
+    success, image = cap.read()
+    if not success:
+      print("Ignoring empty camera frame.")
+    
+      break
+    
