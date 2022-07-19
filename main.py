@@ -16,4 +16,5 @@ def converttogray(image):
     cv2.imshow('M ',image)
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
-def mask(image):
+def mask(image):    mask = np.zeros(image.shape[:2], dtype="uint8")
+      
