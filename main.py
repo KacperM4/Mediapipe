@@ -145,4 +145,8 @@ allPoints = []with mp_pose.Pose(
    
     #ZVEREV POZIOMO
     #imS = cv2.resize(image, (700, 450))
-    
+        cv2.imshow('MediaPipe ',image)
+    out.write(image)
+    if cv2.waitKey(100) & 0xFF == 27:
+      break
+cap.release()   
