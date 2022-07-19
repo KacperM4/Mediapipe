@@ -53,25 +53,13 @@ def jasnosc(image):    kernel = np.array([[0, -1, 0],
 cap = cv2.VideoCapture("D:\\Tenis_04_07\\Wideonly\\zverev.mp4")
 print((int(cap.get(4)), int(cap.get(3))))
 
-
 out = cv2.VideoWriter("D:/Tenis_04_07/Wideonly/mediapipe/test.mp4", cv2.VideoWriter_fourcc(*'MPG4'), 24, (int(cap.get(3)), int(cap.get(4))))
 
-
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
-mp_holistic = mp.solutions.holistic
-mp_pose = mp.solutions.pose
-
-TENNIS_POSE_CONNECTIONS = frozenset([(11, 12), (11, 13),
-                              (13, 15), (15, 17), (15, 19), (15, 21), (17, 19),
-                              (12, 14), (14, 16), (16, 18), (16, 20), (16, 22),
-                              (18, 20), (11, 23), (12, 24), (23, 24), (23, 25),
-                              (24, 26), (25, 27), (26, 28), (27, 29), (28, 30),
-                              (29, 31), (30, 32), (27, 31), (28, 32)])
-allPoints = []with mp_pose.Pose(
+allPoints = []
+with mp_pose.Pose(
     min_detection_confidence=0.7,
-    min_tracking_confidence=0.8) as pose:  frame=0
-
+    min_tracking_confidence=0.8) as pose:
+  frame=0
   
   while cap.isOpened():
   #while frame < 30:
