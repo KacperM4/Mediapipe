@@ -140,3 +140,9 @@ allPoints = []with mp_pose.Pose(
         .get_default_tennis_style(),
         connection_drawing_spec=mp_drawing_styles
         .get_default_tennis_style())
+
+    #print(image.shape[0], image.shape[1], )
+   
+    #ZVEREV POZIOMO
+    #imS = cv2.resize(image, (700, 450))
+    
