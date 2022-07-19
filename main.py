@@ -101,4 +101,4 @@ allPoints = []with mp_pose.Pose(
     #image = converttoHSV(image)
     image = jasnosc(image)
     #image = splitchannels(image)
-    #image = mask(image)
+    #image = mask(image)    cv2.imshow('M ',image)
