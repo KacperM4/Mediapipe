@@ -7,10 +7,6 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_holistic = mp.solutions.holistic
 mp_pose = mp.solutions.pose
-cap = cv2.VideoCapture('D:\\Tenis_04_07\\Wideonly\\zverev.mp4')
-print((int(cap.get(4)), int(cap.get(3))))
-
-out = cv2.VideoWriter('D:/Tenis_04_07/Wideonly/mediapipe/test.mp4', cv2.VideoWriter_fourcc(*'MPG4'), 24, (int(cap.get(3)), int(cap.get(4))))
 TENNIS_POSE_CONNECTIONS = frozenset([(11, 12), (11, 13),
                               (13, 15), (15, 17), (15, 19), (15, 21), (17, 19),
                               (12, 14), (14, 16), (16, 18), (16, 20), (16, 22),
@@ -18,24 +14,20 @@ TENNIS_POSE_CONNECTIONS = frozenset([(11, 12), (11, 13),
                               (24, 26), (25, 27), (26, 28), (27, 29), (28, 30),
                               (29, 31), (30, 32), (27, 31), (28, 32)])
   
-def convert_to_gray(image):
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imshow('M ',image)
-    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
 def mask(image):
     mask = np.zeros(image.shape[:2], dtype="uint8")
     kernel = np.ones((5, 5), np.uint8)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    Lower_hsv = np.array([20, 15, 15])
-    Upper_hsv = np.array([210, 210, 210])
-    Mask = cv2.inRange(hsv, Lower_hsv, Upper_hsv)
+    lower_hsv = np.array([20, 15, 15])
+    upper_hsv = np.array([210, 210, 210])
+    Mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
     Mask = cv2.erode(Mask, kernel, iterations=1)
     Mask = cv2.morphologyEx(Mask, cv2.MORPH_OPEN, kernel)
     Mask = cv2.dilate(Mask, kernel, iterations=1)
     mask = cv2.bitwise_not(Mask)
     cv2.imshow("Mask", mask)
-    masked = cv2.bitwise_and(image, image, mask=mask)
+    masked = cv2.bitwise_and(image, image, mask)
     cv2.imshow("Mask applied to Image", masked)
     return masked
 
@@ -59,70 +51,76 @@ def split_channels(image):
     cv2.imshow('Merged', image)
     return image
 
+def pose_landmarks(image, pose):
+            image.flags.writeable = False
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            results = pose.process(image)
+            results.pose_landmarks.landmark[6].x = -1
+            results.pose_landmarks.landmark[6].y = -1
+            results.pose_landmarks.landmark[8].x = -1
+            results.pose_landmarks.landmark[8].y = -1
+            results.pose_landmarks.landmark[5].x = -1
+            results.pose_landmarks.landmark[5].y = -1
+            results.pose_landmarks.landmark[4].x = -1
+            results.pose_landmarks.landmark[4].y = -1
+            results.pose_landmarks.landmark[0].x = -1
+            results.pose_landmarks.landmark[0].y = -1
+            results.pose_landmarks.landmark[1].x = -1
+            results.pose_landmarks.landmark[1].y = -1
+            results.pose_landmarks.landmark[2].x = -1
+            results.pose_landmarks.landmark[2].y = -1
+            results.pose_landmarks.landmark[3].x = -1
+            results.pose_landmarks.landmark[3].y = -1
+            results.pose_landmarks.landmark[7].x = -1
+            results.pose_landmarks.landmark[7].y = -1
+            results.pose_landmarks.landmark[9].x = -1
+            results.pose_landmarks.landmark[9].y = -1
+            results.pose_landmarks.landmark[10].x = -1
+            results.pose_landmarks.landmark[10].y = -1
+    
+            image.flags.writeable = True
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            mp_drawing.draw_landmarks(
+                image,
+                results.pose_landmarks,
+                TENNIS_POSE_CONNECTIONS,
+                landmark_drawing_spec=mp_drawing_styles
+                .get_default_tennis_style(),
+                connection_drawing_spec=mp_drawing_styles
+                .get_default_tennis_style())
 
-allPoints = []
-with mp_pose.Pose(
-    min_detection_confidence=0.7,
-    min_tracking_confidence=0.8) as pose:
-  frame=0
+            return image
+
+def main():
+
+    wideo_capture = cv2.VideoCapture('D:\\Tenis_04_07\\Wideonly\\zverev.mp4')
+    out = cv2.VideoWriter('D:/Tenis_04_07/Wideonly/mediapipe/test.mp4', cv2.VideoWriter_fourcc(*'MPG4'),
+    24, (int(wideo_capture.get(3)), int(wideo_capture.get(4))))
+
+
+    with mp_pose.Pose(
+            min_detection_confidence=0.7,
+            min_tracking_confidence=0.8) as pose:
+        frame=0
   
-  while cap.isOpened():
-  #while frame < 30:
-    frame = frame + 1
-    success, image = cap.read()
-    if not success:
-      print("Ignoring empty camera frame.")
-      break
+        while wideo_capture.isOpened():
+        #while frame < 30:
+            frame = frame + 1
+            success, image = wideo_capture.read()
+            if not success:
+                print("Ignoring empty camera frame.")
+                break
     
-    image = cv2.resize(image, (700, 450))
-
-    #image = converToGray(image)
-    #image = brightness(image)
-    image = split_channels(image)
-    #image = mask(image)
-
-    image.flags.writeable = False
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    results = pose.process(image)
-    results.pose_landmarks.landmark[6].x = -1
-    results.pose_landmarks.landmark[6].y = -1
-    results.pose_landmarks.landmark[8].x = -1
-    results.pose_landmarks.landmark[8].y = -1
-    results.pose_landmarks.landmark[5].x = -1
-    results.pose_landmarks.landmark[5].y = -1
-    results.pose_landmarks.landmark[4].x = -1
-    results.pose_landmarks.landmark[4].y = -1
-    results.pose_landmarks.landmark[0].x = -1
-    results.pose_landmarks.landmark[0].y = -1
-    results.pose_landmarks.landmark[1].x = -1
-    results.pose_landmarks.landmark[1].y = -1
-    results.pose_landmarks.landmark[2].x = -1
-    results.pose_landmarks.landmark[2].y = -1
-    results.pose_landmarks.landmark[3].x = -1
-    results.pose_landmarks.landmark[3].y = -1
-    results.pose_landmarks.landmark[7].x = -1
-    results.pose_landmarks.landmark[7].y = -1
-    results.pose_landmarks.landmark[9].x = -1
-    results.pose_landmarks.landmark[9].y = -1
-    results.pose_landmarks.landmark[10].x = -1
-    results.pose_landmarks.landmark[10].y = -1
- 
-    image.flags.writeable = True
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    mp_drawing.draw_landmarks(
-        image,
-        results.pose_landmarks,
-        TENNIS_POSE_CONNECTIONS,
-        landmark_drawing_spec=mp_drawing_styles
-        .get_default_tennis_style(),
-        connection_drawing_spec=mp_drawing_styles
-        .get_default_tennis_style())
+            image = cv2.resize(image, (700, 450))
+            #image = brightness(image)
+            image = split_channels(image)
+            #image = mask(image)  
+            image = pose_landmarks(image, pose)          
+            cv2.imshow('MediaPipe ',image)
+            out.write(image)
+            if cv2.waitKey(100) & 0xFF == 27:
+                break
+        wideo_capture.release()   
    
-    #ZVEREV POZIOMO
-    #imS = cv2.resize(image, (700, 450))
-    
-    cv2.imshow('MediaPipe ',image)
-    out.write(image)
-    if cv2.waitKey(100) & 0xFF == 27:
-      break
-cap.release()   
+if __name__ == '__main__':
+    main()
